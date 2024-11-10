@@ -122,7 +122,7 @@ export type Database = {
           username: string
         }
         Insert: {
-          id: string
+          id?: string
           username: string
         }
         Update: {
@@ -166,7 +166,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_user_from_clerk: {
+        Args: {
+          clerk_id: string
+          username: string
+        }
+        Returns: undefined
+      }
+      requesting_user_id: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
