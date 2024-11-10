@@ -1,5 +1,5 @@
 
-const BACKEND_AI = 'http://127.0.0.1:8000/';
+const BACKEND_AI = import.meta.env.VITE_BACKEND_AI_URL;
 
 type ResultType = {
     community: string;

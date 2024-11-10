@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "update-types": "supabase gen types typescript --project-id cobnjvyhgqvaownxctzp > src/supabase/database.types.ts"
+    "update-types": "supabase gen types typescript --project-id cobnjvyhgqvaownxctzp > src/supabase/database.types.ts",
+    "host": "vite --host 172.20.10.14"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.15.2",
