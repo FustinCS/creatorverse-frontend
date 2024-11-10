@@ -60,6 +60,16 @@ export default function Feed() {
     navigate(`/community/${communityName}`);
   };
 
+
+  if (communities.length === 0) {
+    return (
+      <main className="h-[calc(100vh-5rem)] w-full flex items-center justify-center">
+        <h1 className="text-3xl font-semibold">No communities found</h1>
+      </main>
+    );
+  }
+
+
   return (
     <main className="h-[calc(100vh-5rem)] w-full">
       {" "}
