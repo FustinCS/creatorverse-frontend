@@ -1,3 +1,4 @@
+import { getUserCommunities } from "@/api/supabase-api"
 import { Card, CardContent } from "@/components/ui/card"
 import {
   Carousel,
@@ -7,12 +8,23 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { SignedIn, useUser } from "@clerk/clerk-react"
+import { useEffect, useState } from "react"
 
-const categories = [
-    {title: "kirby"},
-    {title: "animals"},
-    {title: "digital art"},
-]
+// const categories = [
+//     {title: "kirby"},
+//     {title: "animals"},
+//     {title: "digital art"},
+// ]
+
+interface Item {
+    title: string;
+    description: string;
+  }
+  
+interface Items {
+[key: string]: Item[];  // This makes it a string-indexed type
+}
 
 const items = {
   kirby: [
@@ -39,6 +51,43 @@ const items = {
 }
 
 export default function Feed() {
+    const { user, isSignedIn } = useUser();
+    const [categories, setCommunities] = useState<Community[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+  
+    useEffect(() => {
+      async function loadCommunities() {
+        // Check if user and user.id exist
+        if (!user?.id) return;
+        
+        try {
+          setLoading(true);
+          const userCommunities = await getUserCommunities(user.id);
+          setCommunities(userCommunities);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+      }
+  
+      loadCommunities();
+    }, [user]);
+  
+    // Early return if not signed in
+    if (!isSignedIn || !user) {
+      return null;
+    }
+  
+    if (loading) {
+      return <div>Loading your communities...</div>;
+    }
+  
+    if (error) {
+      return <div>Error loading communities: {error}</div>;
+    }
+
   return (
     <main className="h-[calc(100vh-8rem)] w-full"> {/* Subtracting both navbar and header height */}
       <ScrollArea className="h-full w-full">
