@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useUser } from '@clerk/clerk-react'
 import LandingPage from '../components/landing-page'
 import supabase from '../supabase/client'
+import Feed from './community/feed';
 
 
 
@@ -46,9 +47,7 @@ export default function IndexPage() {
 
     return (
     <div>
-        <h1>This is the index page</h1>
-        <div>
-        </div>
+        <Feed />
     </div>
     )
 }
