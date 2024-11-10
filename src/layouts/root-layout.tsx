@@ -19,7 +19,7 @@ export default function RootLayout() {
       <header className="header">
         <div>
           <div>
-            <p>Clerk + React + React Router App</p>
+            <p>Creatorverse</p>
           </div>
           <SignedIn>
             <UserButton />

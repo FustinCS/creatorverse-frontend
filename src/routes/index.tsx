@@ -1,22 +1,23 @@
+import { useEffect } from 'react'
+import { useUser } from '@clerk/clerk-react'
+
 import { Link } from 'react-router-dom'
+import LandingPage from '../components/landing-page'
 
 export default function IndexPage() {
-  return (
+    const { isSignedIn, user} = useUser()
+
+    if (!isSignedIn) {
+        return (
+        <LandingPage/>
+    )
+    }
+
+    return (
     <div>
-      <h1>This is the index page</h1>
-      <div>
-        <ul>
-          <li>
-            <Link to="/sign-up">Sign Up</Link>
-          </li>
-          <li>
-            <Link to="/sign-in">Sign In</Link>
-          </li>
-          <li>
-            <Link to="/dashboard">Dashboard</Link>
-          </li>
-        </ul>
-      </div>
+        <h1>This is the index page</h1>
+        <div>
+        </div>
     </div>
-  )
+    )
 }
