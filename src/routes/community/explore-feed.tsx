@@ -3,7 +3,6 @@ import Marquee from "@/components/ui/Marquee";
 import { useEffect, useState } from "react";
 import supabase from "@/supabase/client";
 import { useNavigate } from 'react-router-dom';
-import { useUser } from "@clerk/clerk-react";
 
 type CommunityInfo = {
   name: string;
@@ -26,8 +25,7 @@ function extendArray(arr: ArtInfo[], minLength: number) {
 }
 
 
-export default function Feed() {
-  const { user } = useUser();
+export default function ExploreFeed() {
   const [communities, setCommunitites] = useState<CommunityInfo[]>([]);
   const [selectedCommunity, setSelectedCommunity] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -36,14 +34,10 @@ export default function Feed() {
   useEffect(() => {
     async function fetchCommunities() {
       const { data: communityInfo, error: communityError } = await supabase
-      .from("Community")
-      .select(`
-        name,
-        Art(id, publicUrl),
-        Users_Communities!inner(userId)
-      `)
-      .eq("Users_Communities.userId", user?.id)
-      .limit(15);
+        .from("Community")
+        .select("name, Art(id, publicUrl)")
+        .limit(15);
+
       if (communityError) {
         console.error("Error fetching communities", communityError);
         return;
@@ -52,7 +46,7 @@ export default function Feed() {
       setCommunitites(communityInfo);
     }
     fetchCommunities();
-  }, [user?.id]);
+  }, []);
 
   const handleCommunityClick = (communityName: string) => {
     setSelectedCommunity(communityName);
