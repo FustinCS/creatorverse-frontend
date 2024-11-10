@@ -2,7 +2,9 @@
 const PostPage = () => {
   
   return (
-    <div className="bg-blue-200 debug">PostPage</div>
+    <div className="bg-blue-400 h-full">
+      PostPage
+    </div>
   )
 }
 

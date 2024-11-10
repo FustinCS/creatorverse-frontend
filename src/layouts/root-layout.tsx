@@ -16,9 +16,9 @@ export default function RootLayout() {
       routerReplace={(to) => navigate(to, { replace: true })}
       publishableKey={PUBLISHABLE_KEY}
     >
-      <div className=''>
+      {/* <div className='flex flex-col min-h-screen'> */}
         <header className="">
-            <nav className='debug flex flex-row'>
+            <nav className='flex flex-row'>
               <p className=''>Creatorverse</p>
               <p>testing link 2</p>
               <SignedIn>
@@ -29,10 +29,10 @@ export default function RootLayout() {
               </SignedOut>
             </nav>
         </header>
-        <main className=''>
+        <main className='flex-grow h-[100vh]'>
           <Outlet />
         </main>
-      </div>
+      {/* </div> */}
     </ClerkProvider>
   )
 }
