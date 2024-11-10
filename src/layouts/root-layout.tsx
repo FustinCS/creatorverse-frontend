@@ -1,6 +1,7 @@
-import { Link, Outlet, useNavigate } from 'react-router-dom'
-import { ClerkProvider, SignedIn, SignedOut, UserButton } from '@clerk/clerk-react'
+import { Outlet, useNavigate } from 'react-router-dom'
+import { ClerkProvider } from '@clerk/clerk-react'
 import Navbar from '@/components/ui/nav-bar'
+import { Toaster } from '@/components/ui/toaster'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
@@ -33,6 +34,7 @@ export default function RootLayout() {
         <Navbar />
         <main className="flex-1 h-[calc(100vh-5rem)]">
           <Outlet />
+          <Toaster />
         </main>
       {/* </div> */}
     </ClerkProvider>
