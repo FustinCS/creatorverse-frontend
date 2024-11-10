@@ -38,7 +38,7 @@ const router = createBrowserRouter([
         path: 'community',
         children: [
           { path: '/community', element: <CommunityPage /> },
-          { path: '/community/feed', element: <Feed /> },
+          { path: '/community/feed', element: <Feed/> },
 
         ],
       },
