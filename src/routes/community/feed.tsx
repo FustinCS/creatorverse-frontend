@@ -82,7 +82,7 @@ export default function Feed() {
     <main className="h-[calc(100vh-8rem)] w-full">
       {" "}
       {/* Subtracting both navbar and header height */}
-      <ScrollArea className="h-full w-full my-16">
+      <ScrollArea className="h-full w-full">
         {communities.map((community) => (
           <div 
           key={community.name}
