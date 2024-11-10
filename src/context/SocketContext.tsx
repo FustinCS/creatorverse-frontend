@@ -27,7 +27,7 @@ interface SocketContextType {
 
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
 
-const socket = io("http://localhost:3000/");
+const socket = io(import.meta.env.VITE_BACKEND_URL);
 
 const SocketContextProvider = ({ children }: { children: React.ReactNode }) => {
     type CallType = {
@@ -63,6 +63,9 @@ const SocketContextProvider = ({ children }: { children: React.ReactNode }) => {
 
     const requestMediaPermissions = async () => {
         try {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                throw new Error("getUserMedia is not supported in this browser");
+            }
             const currentStream = await navigator.mediaDevices.getUserMedia({
                 video: true,
                 audio: true,
