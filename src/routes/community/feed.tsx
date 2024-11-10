@@ -1,32 +1,8 @@
-import Banner from "@/components/Banner";
-import { Card, CardContent } from "@/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Marquee from "@/components/ui/Marquee";
 import { useEffect, useState } from "react";
 import supabase from "@/supabase/client";
-import CommunityPage from "./community";
 import { useNavigate } from 'react-router-dom';
-
-
-const art = [
-  { name: "Kirby" },
-  { name: "Meta Knight" },
-  { name: "Kirby" },
-  { name: "Meta Knight" },
-  { name: "Kirby" },
-  { name: "Meta Knight" },
-  { name: "Kirby" },
-  { name: "Meta Knight" },
-  { name: "Kirby" },
-  { name: "Meta Knight" },
-];
 
 type CommunityInfo = {
   name: string;
