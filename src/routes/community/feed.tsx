@@ -1,136 +1,83 @@
-import { getUserCommunities } from "@/api/supabase-api"
-import { Card, CardContent } from "@/components/ui/card"
+import Banner from "@/components/Banner";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { SignedIn, useUser } from "@clerk/clerk-react"
-import { useEffect, useState } from "react"
+} from "@/components/ui/carousel";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import Marquee from "@/components/ui/Marquee";
+import { useEffect, useState } from "react";
+import supabase from "@/supabase/client";
+import CommunityPage from "./community";
 
-// const categories = [
-//     {title: "kirby"},
-//     {title: "animals"},
-//     {title: "digital art"},
-// ]
+const art = [
+  { name: "Kirby" },
+  { name: "Meta Knight" },
+  { name: "Kirby" },
+  { name: "Meta Knight" },
+  { name: "Kirby" },
+  { name: "Meta Knight" },
+  { name: "Kirby" },
+  { name: "Meta Knight" },
+  { name: "Kirby" },
+  { name: "Meta Knight" },
+];
 
-interface Item {
-    title: string;
-    description: string;
-  }
-  
-interface Items {
-[key: string]: Item[];  // This makes it a string-indexed type
+type CommunityInfo = {
+  name: string;
+  Art: { id: string; publicUrl: string }[];
 }
 
-const items = {
-  kirby: [
-    { title: "Kirby Pink", description: "The beloved pink puffball" },
-    { title: "Meta Knight", description: "Mysterious masked warrior" },
-    { title: "King Dedede", description: "Self-proclaimed king" },
-    { title: "Waddle Dee", description: "Loyal helper" },
-    { title: "Bandana Dee", description: "Spear wielding friend" },
-  ],
-  animals: [
-    { title: "Cats", description: "Curious feline friends" },
-    { title: "Dogs", description: "Loyal companions" },
-    { title: "Birds", description: "Colorful aerial acrobats" },
-    { title: "Rabbits", description: "Hoppy little buddies" },
-    { title: "Hamsters", description: "Tiny ball of fluff" },
-  ],
-  "digital art": [
-    { title: "Pixel Art", description: "Retro style graphics" },
-    { title: "3D Renders", description: "Computer generated art" },
-    { title: "Digital Paintings", description: "Traditional art goes digital" },
-    { title: "Vector Art", description: "Clean and scalable" },
-    { title: "Character Design", description: "Original character concepts" },
-  ]
-}
 
 export default function Feed() {
-    const { user, isSignedIn } = useUser();
-    const [categories, setCommunities] = useState<Community[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-  
-    useEffect(() => {
-      async function loadCommunities() {
-        // Check if user and user.id exist
-        if (!user?.id) return;
-        
-        try {
-          setLoading(true);
-          const userCommunities = await getUserCommunities(user.id);
-          setCommunities(userCommunities);
-        } catch (err) {
-          setError(err.message);
-        } finally {
-          setLoading(false);
-        }
+  const [communities, setCommunitites] = useState<CommunityInfo[]>([]);
+
+  useEffect(() => {
+    async function fetchCommunities() {
+      const { data: communityInfo, error: communityError } = await supabase
+        .from("Community")
+        .select("name, Art(id, publicUrl)")
+        .limit(15);
+
+      if (communityError) {
+        console.error("Error fetching communities", communityError);
+        return;
       }
-  
-      loadCommunities();
-    }, [user]);
-  
-    // Early return if not signed in
-    if (!isSignedIn || !user) {
-      return null;
+
+      setCommunitites(communityInfo);
     }
-  
-    if (loading) {
-      return <div>Loading your communities...</div>;
-    }
-  
-    if (error) {
-      return <div>Error loading communities: {error}</div>;
-    }
+    fetchCommunities();
+  }, []);
 
   return (
-    <main className="h-[calc(100vh-8rem)] w-full"> {/* Subtracting both navbar and header height */}
+    <main className="h-[calc(100vh-8rem)] w-full">
+      {" "}
+      {/* Subtracting both navbar and header height */}
       <ScrollArea className="h-full w-full">
-        <div className="space-y-8 p-6">
-          {categories.map((category, categoryIndex) => (
-            <div key={categoryIndex} className="space-y-3">
-              <h2 className="text-2xl font-bold capitalize pl-4">
-                {category.title}
-              </h2>
-              
-              <Carousel
-                opts={{
-                  align: "start",
-                  loop: true,
-                }}
-                className="w-full max-w-5xl mx-auto"
-              >
-                <CarouselContent className="-ml-2 md:-ml-4">
-                  {(items[category.title.toLowerCase()] || []).map((item, index) => (
-                    <CarouselItem 
-                      key={index} 
-                      className="pl-2 md:pl-4 md:basis-1/4"
-                    >
-                      <div className="p-1">
-                        <Card className="border hover:border-primary transition-all duration-200">
-                          <CardContent className="flex flex-col aspect-square items-center justify-center p-4 gap-2">
-                            <h3 className="text-lg font-semibold">{item.title}</h3>
-                            <p className="text-sm text-muted-foreground text-center">{item.description}</p>
-                          </CardContent>
-                        </Card>
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <div className="flex items-center justify-end gap-2 mt-2">
-                  <CarouselPrevious />
-                  <CarouselNext />
-                </div>
-              </Carousel>
+        {communities.map((community) => (
+          <div className="group flex flex-col m-8 items-center justify-center bg-background rounded-3xl cursor-pointer">
+            <h2 className="scroll-m-20  pb-2 text-3xl font-semibold tracking-tight first:mt-0 p-4 group-hover:scale-110">
+              {community.name}
+            </h2>
+            <div className="relative w-9/12  bg-background ">
+              <Marquee runOnHover className="[--duration:15s]">
+                {community.Art.map((artwork) => (
+                  <img
+                    key={artwork.id}
+                    src={artwork.publicUrl}
+                    className="max-w-[150px] h-[10rem] object-cover px-0 py-[10px]"
+                  />
+                ))}
+              </Marquee>
+              <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-white dark:from-background"></div>
+              <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-white dark:from-background"></div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </ScrollArea>
     </main>
-  )
+  );
 }
