@@ -1,5 +1,7 @@
+import ExploreFeed from "./community/explore-feed";
+
 export default function ExplorePage(){
     return (
-        <div>Explore Page</div>
+        <ExploreFeed />
     )
 }

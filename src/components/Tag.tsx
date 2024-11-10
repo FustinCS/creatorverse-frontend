@@ -40,7 +40,7 @@ const Tag = ({
                 <input
                     type="text"
                     value={editName}
-                    onChange={(e) => setEditName(e.target.value)}
+                    onChange={(e) => setEditName(e.target.value.replace(/\s/g, ''))}
                     className=" font-bold text-center border-none outline-none bg-transparent text-black"
                     placeholder="tag: "
                 />
