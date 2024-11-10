@@ -1,18 +1,16 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Home from './Home'
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+import Home from "./Home";
 
-function App() {
-
+export default function App() {
   return (
-    <>
-      <div className="card">
-        <Home/>
-      </div>
-    </>
-  )
+    <header>
+      <Home/>
+      <SignedOut>
+        <SignInButton />
+      </SignedOut>
+      <SignedIn>
+        <UserButton />
+      </SignedIn>
+    </header>
+  );
 }
-
-export default App
