@@ -43,7 +43,7 @@ const router = createBrowserRouter([
         element: <DashboardLayout />,
         path: 'community',
         children: [
-          { path: '/community', element: <CommunityPage /> },
+          {path: "/community/:communityName", element: <CommunityPage />},
           { path: '/community/feed', element: <Feed/> },
 
         ],
