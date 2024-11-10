@@ -45,3 +45,23 @@ export const getCommunityImages = async (community: string) => {
         return artworks;
     }
 
+    export const getUserPosts = async (userId: string) => {
+        const { data, error } = await supabase
+            .from('Art') 
+            .select(`
+                id,
+                title,
+                publicUrl
+            `)
+            .eq('userId', userId);
+    
+        if (error) throw error;
+        if (!data) return [];
+    
+        // Transform the nested structure
+        return data.map(item => ({
+            id: item.id,
+            title: item.title,
+            publicUrl: item.publicUrl
+        }));
+    }
