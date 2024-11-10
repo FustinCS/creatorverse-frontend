@@ -1,11 +1,12 @@
 import ArtPost from "@/components/art-post"
+import { ScrollArea } from "@radix-ui/react-scroll-area"
 
 const PostPage = () => {
   
   return (
-    <div className=" mt-16">
-      <ArtPost></ArtPost>
-    </div>
+      <ScrollArea className="h-full w-full">
+        <ArtPost></ArtPost>
+      </ScrollArea>
   )
 }
 

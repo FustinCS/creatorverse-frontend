@@ -96,8 +96,9 @@ export default function ArtPost() {
 
 
   return (
+    <div className="h-[calc(100vh-5rem)] overflow-y-auto p-4 flex items-center justify-center">
     <Card className="w-full max-w-2xl mx-auto">
-      <CardContent className="p-6 flex flex-col gap-4">
+      <CardContent className="p-4 flex flex-col gap-4">
         {/* <h2 className="text-2xl font-bold text-center">{artName}</h2> */}
           <input
           type="text"
@@ -161,5 +162,6 @@ export default function ArtPost() {
           <Button variant='default'>Post</Button>
       </CardContent>
     </Card>
+    </div>
   )
 }
