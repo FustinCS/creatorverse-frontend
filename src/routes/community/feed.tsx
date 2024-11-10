@@ -79,7 +79,7 @@ export default function Feed() {
   };
 
   return (
-    <main className="h-[calc(100vh-8rem)] w-full">
+    <main className="h-[calc(100vh-5rem)] w-full">
       {" "}
       {/* Subtracting both navbar and header height */}
       <ScrollArea className="h-full w-full">
