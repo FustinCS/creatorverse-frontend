@@ -1,5 +1,6 @@
 import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { ClerkProvider, SignedIn, SignedOut, UserButton } from '@clerk/clerk-react'
+import Navbar from '@/components/ui/nav-bar'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
@@ -17,7 +18,7 @@ export default function RootLayout() {
       publishableKey={PUBLISHABLE_KEY}
     >
       {/* <div className='flex flex-col min-h-screen'> */}
-        <header className="h-20 bg-slate-400">
+        {/* <header className="h-20 bg-slate-400">
             <nav className='flex flex-row'>
               <p className=''>Creatorverse</p>
               <p>testing link 2</p>
@@ -28,8 +29,9 @@ export default function RootLayout() {
                 <Link to="/sign-in">Sign In</Link>
               </SignedOut>
             </nav>
-        </header>
-        <main className='flex-grow h-[100vh]'>
+        </header> */}
+        <Navbar />
+        <main className="flex-1 h-[calc(100vh-5rem)]">
           <Outlet />
         </main>
       {/* </div> */}
