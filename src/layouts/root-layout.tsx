@@ -18,9 +18,9 @@ export default function RootLayout() {
     >
       <header className="header">
         <div>
-          <div>
             <p>Creatorverse</p>
-          </div>
+        </div>
+        <div>
           <SignedIn>
             <UserButton />
           </SignedIn>
