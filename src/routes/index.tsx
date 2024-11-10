@@ -1,7 +1,5 @@
 import { useEffect } from 'react'
 import { useUser } from '@clerk/clerk-react'
-
-import { Link } from 'react-router-dom'
 import LandingPage from '../components/landing-page'
 
 export default function IndexPage() {
