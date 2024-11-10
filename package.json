@@ -13,6 +13,7 @@
   "dependencies": {
     "@clerk/clerk-react": "^5.15.2",
     "@prisma/client": "^5.22.0",
+    "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-scroll-area": "^1.2.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.2",

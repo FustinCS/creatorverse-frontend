@@ -30,59 +30,42 @@ export default function CommunityPage() {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="container mx-auto p-4 min-h-screen">
-      <h1 className="text-2xl font-bold mb-6 capitalize">{communityName}</h1>
-      
-      <div className="flex flex-col lg:flex-row gap-4 h-full">
-        {/* Gallery Section */}
-        <Card className="flex-1 flex flex-col">
+    <div className="h-[calc(100vh-5rem)] p-4">
+      <div className="flex gap-4 h-full">
+        {/* Left Card */}
+        <Card className="flex-1">
           <CardHeader>
             <CardTitle>Gallery</CardTitle>
           </CardHeader>
-          <CardContent className="flex-1">
-            <ScrollArea className="h-[calc(100vh-200px)] lg:h-[calc(100vh-240px)]">
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <ScrollArea className="h-[calc(100%-4rem)]">
+            <CardContent>
+              <div className="grid grid-cols-2 gap-4">
                 {artworks.map((art) => (
-                  <div key={art.id} className="relative aspect-square group">
+                  <div key={art.id} className="aspect-square">
                     <img
                       src={art.publicUrl}
                       alt={art.title}
-                      className="rounded-md w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+                      className="rounded-md w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-end">
-                      <p className="text-white p-2 text-sm truncate w-full">
-                        {art.title}
-                      </p>
-                    </div>
                   </div>
                 ))}
               </div>
-            </ScrollArea>
-          </CardContent>
+            </CardContent>
+          </ScrollArea>
         </Card>
 
-        {/* Video/Chat Section */}
-        <Card className="flex-1 flex flex-col">
+        {/* Right Card */}
+        <Card className="flex-1">
           <CardHeader>
             <CardTitle>Live Stream</CardTitle>
           </CardHeader>
-          <CardContent className="flex-1">
-            <div className="aspect-video bg-muted rounded-lg mb-4">
-              {/* Video placeholder */}
-              <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                Stream not available
-              </div>
-            </div>
-            
-            {/* Chat area */}
-            <ScrollArea className="h-[calc(100vh-450px)]">
+          <ScrollArea className="h-[calc(100%-4rem)]">
+            <CardContent>
               <div className="space-y-4">
-                <p className="text-center text-muted-foreground">
-                  Chat messages will appear here
-                </p>
+                <div className="aspect-video bg-muted rounded-lg" />
               </div>
-            </ScrollArea>
-          </CardContent>
+            </CardContent>
+          </ScrollArea>
         </Card>
       </div>
     </div>
