@@ -17,7 +17,7 @@ export default function RootLayout() {
       publishableKey={PUBLISHABLE_KEY}
     >
       {/* <div className='flex flex-col min-h-screen'> */}
-        <header className="">
+        <header className="h-20 bg-slate-400">
             <nav className='flex flex-row'>
               <p className=''>Creatorverse</p>
               <p>testing link 2</p>
