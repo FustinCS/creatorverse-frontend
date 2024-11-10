@@ -15,6 +15,8 @@ import CommunityPage from './routes/community/community'
 import PostPage from './routes/PostPage'
 import { RedirectToSignIn, SignedIn, SignedOut } from '@clerk/clerk-react'
 import Feed from './routes/community/feed'
+import Profile from './routes/Profile'
+import ExplorePage from './routes/Explore'
 
 const router = createBrowserRouter([
   {
@@ -24,6 +26,8 @@ const router = createBrowserRouter([
       { path: '/sign-in/*', element: <SignInPage /> },
       { path: '/sign-up/*', element: <SignUpPage /> },
       { path: '/post', element: (
+        
+
         <>
           <SignedIn>
             <PostPage />
@@ -33,6 +37,8 @@ const router = createBrowserRouter([
           </SignedOut>
         </>
       )}, 
+      { path: '/profile', element: <Profile /> },
+      { path: '/explore', element: <ExplorePage /> },
       {
         element: <DashboardLayout />,
         path: 'community',
