@@ -12,6 +12,8 @@ import Marquee from "@/components/ui/Marquee";
 import { useEffect, useState } from "react";
 import supabase from "@/supabase/client";
 import CommunityPage from "./community";
+import { useNavigate } from 'react-router-dom';
+
 
 const art = [
   { name: "Kirby" },
@@ -34,6 +36,9 @@ type CommunityInfo = {
 
 export default function Feed() {
   const [communities, setCommunitites] = useState<CommunityInfo[]>([]);
+  const [selectedCommunity, setSelectedCommunity] = useState<string | null>(null);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     async function fetchCommunities() {
@@ -52,15 +57,27 @@ export default function Feed() {
     fetchCommunities();
   }, []);
 
+  const handleCommunityClick = (communityName: string) => {
+    setSelectedCommunity(communityName);
+    // Navigate to the community page
+    navigate(`/community/${communityName}`);
+  };
+
   return (
     <main className="h-[calc(100vh-8rem)] w-full">
       {" "}
       {/* Subtracting both navbar and header height */}
       <ScrollArea className="h-full w-full">
         {communities.map((community) => (
-          <div className="group flex flex-col m-8 items-center justify-center bg-background rounded-3xl cursor-pointer">
-            <h2 className="scroll-m-20  pb-2 text-3xl font-semibold tracking-tight first:mt-0 p-4 group-hover:scale-110">
-              {community.name}
+          <div 
+          key={community.name}
+          className="group flex flex-col m-8 items-center justify-center bg-background rounded-3xl cursor-pointer"
+          onClick={() => handleCommunityClick(community.name)}
+            >
+          <h2 className={`scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0 p-4 group-hover:scale-110 
+            ${selectedCommunity === community.name ? 'text-primary' : ''}`}
+            >
+            {community.name}
             </h2>
             <div className="relative w-9/12  bg-background ">
               <Marquee runOnHover className="[--duration:15s]">
