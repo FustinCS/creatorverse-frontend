@@ -6,7 +6,7 @@ const navItems = [
   { name: "Home", href: "/", icon: Home },
   { name: "Explore", href: "/explore", icon: Compass },
   { name: "Post", href: "/post", icon: PenSquare },
-  { name: "Profile", href: "/profile", icon: User },
+  { name: "Profile", href: "/community/profile", icon: User },
 ]
 
 export default function Navbar() {

@@ -15,7 +15,7 @@ import CommunityPage from './routes/community/community'
 import PostPage from './routes/PostPage'
 import { RedirectToSignIn, SignedIn, SignedOut } from '@clerk/clerk-react'
 import Feed from './routes/community/feed'
-import Profile from './routes/Profile'
+import Profile from './routes/community/profile'
 import ExplorePage from './routes/Explore'
 
 const router = createBrowserRouter([
@@ -37,7 +37,6 @@ const router = createBrowserRouter([
           </SignedOut>
         </>
       )}, 
-      { path: '/profile', element: <Profile /> },
       { path: '/explore', element: <ExplorePage /> },
       {
         element: <DashboardLayout />,
@@ -45,7 +44,7 @@ const router = createBrowserRouter([
         children: [
           {path: "/community/:communityName", element: <CommunityPage />},
           { path: '/community/feed', element: <Feed/> },
-
+          { path: '/community/profile', element: <Profile /> },
         ],
       },
     ],
