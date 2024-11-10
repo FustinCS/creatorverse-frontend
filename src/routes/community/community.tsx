@@ -15,12 +15,12 @@ export default function CommunityPage() {
 
   const activeCalls = [
     { id: 1, name: "Chat Room 1", avatarUrl: "https://i.pravatar.cc/150?u=alice" },
-    { id: 2, name: "Chat Room 1", avatarUrl: "https://i.pravatar.cc/150?u=bob" },
-    { id: 3, name: "Chat Room 1", avatarUrl: "https://i.pravatar.cc/150?u=charlie" },
-    { id: 4, name: "Chat Room 1", avatarUrl: "https://i.pravatar.cc/150?u=diana" },
-    { id: 5, name: "Chat Room 1", avatarUrl: "https://i.pravatar.cc/150?u=edward" },
-    { id: 6, name: "Chat Room 1", avatarUrl: "https://i.pravatar.cc/150?u=fiona" },
-    { id: 7, name: "Chat Room 1", avatarUrl: "https://i.pravatar.cc/150?u=george" },
+    { id: 2, name: "Chat Room 2", avatarUrl: "https://i.pravatar.cc/150?u=bob" },
+    { id: 3, name: "Chat Room 3", avatarUrl: "https://i.pravatar.cc/150?u=charlie" },
+    { id: 4, name: "Chat Room 4", avatarUrl: "https://i.pravatar.cc/150?u=diana" },
+    { id: 5, name: "Chat Room 9", avatarUrl: "https://i.pravatar.cc/150?u=edward" },
+    { id: 6, name: "Chat Room 13", avatarUrl: "https://i.pravatar.cc/150?u=fiona" },
+    { id: 7, name: "Chat Room 14", avatarUrl: "https://i.pravatar.cc/150?u=george" },
     { id: 8, name: "USC Chat Room 1", avatarUrl: "https://i.pravatar.cc/150?u=helen" },
   ]
 
