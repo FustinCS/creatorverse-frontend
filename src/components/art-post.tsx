@@ -183,7 +183,7 @@ export default function ArtPost() {
       .single();
     if (communityError) {
       console.error(`error fetching communityId for tag ${tag}:`, communityError);
-      return;
+      //return;
     }
     const communityId = communityData.id;
     // Post to arts-communities
@@ -193,7 +193,7 @@ export default function ArtPost() {
     });
     if (artComError) {
       console.error(`error submitting art post to arts-communities for tag ${tag}:`, artComError);
-      return;
+      //return;
     }
     // Post to users-communities
     const { error: userComError } = await supabase.from('Users_Communities').insert({
@@ -213,7 +213,7 @@ export default function ArtPost() {
 
 
   return (
-    <div className="h-[calc(100vh-5rem)] overflow-y-auto p-4 flex items-center justify-center">
+    <div className=" overflow-y-auto p-4 flex items-center justify-center">
     <Card className="w-full max-w-2xl mx-auto">
       <CardContent className="p-4 flex flex-col gap-4">
         {/* <h2 className="text-2xl font-bold text-center">{artName}</h2> */}
