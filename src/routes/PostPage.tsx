@@ -1,9 +1,10 @@
+import ArtPost from "@/components/art-post"
 
 const PostPage = () => {
   
   return (
-    <div className="bg-blue-400 h-full">
-      PostPage
+    <div className=" mt-16">
+      <ArtPost></ArtPost>
     </div>
   )
 }

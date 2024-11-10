@@ -32,8 +32,11 @@ html, body {
   background-color: rgb(165 180 252);
 }
 
-debug {
+.debug {
   outline: 1px solid red;
+}
+*{
+  box-sizing: border-box;
 }
 
 @layer base {
