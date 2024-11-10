@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { Button } from "./ui/button";
 import { ImagePlus } from "lucide-react";
-import supabase from "@/supabase/client";
+import supabase, { BUCKET_KEY } from "@/supabase/client";
 import { comparePhoto } from "@/api/api";
 
 export default function ArtPost() {
@@ -70,7 +70,7 @@ export default function ArtPost() {
   };
 
   const generateTags = async() => {
-    if(!imageUrl) {
+    if(!imageUrl || artName === '') {
       return;
     }
     const file = await fetchImageFile(imageUrl);
@@ -82,7 +82,7 @@ export default function ArtPost() {
         console.error('image was not uploaded:', error) //<-------
       } else {
         // CALL API HERE
-        const publicUrl = data.fullPath;
+        const publicUrl = BUCKET_KEY + data.fullPath;
         try {
           await comparePhoto(publicUrl);
           console.log('photo compared');
