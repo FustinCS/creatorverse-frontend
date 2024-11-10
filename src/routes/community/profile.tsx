@@ -66,11 +66,11 @@ export default function UserProfile() {
            {/* Add other stats if needed */}
          </div>
 
-         <h2 className="text-xl font-semibold mb-4">Gallery</h2>
+         <h2 className="text-xl font-semibold mb-4">Posts</h2>
          <ScrollArea className="h-[300px] w-full">
            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
              {posts.map((post) => (
-               <div key={post.id} className="relative aspect-square border-2 ">
+               <div key={post.id} className="relative aspect-square border-2 rounded-lg">
                  <img
                    src={post.publicUrl}
                    alt={post.title}
