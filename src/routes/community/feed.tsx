@@ -5,20 +5,22 @@ import {
     CarouselItem,
     CarouselNext,
     CarouselPrevious,
-  } from "src/components/ui/carousel"
+  } from "@/components/ui/carousel"
 
   
-export default function CommunityPage() {
+export default function Feed() {
   return (
     <>
       <h1>Feed Page</h1>
-      <p>This is the feed.</p>
-
-      <ul>
-        <li>
-          <Link to="/community/"></Link>
-        </li>
-      </ul>
+      <Carousel>
+    <CarouselContent>
+        <CarouselItem>item1</CarouselItem>
+        <CarouselItem>item2</CarouselItem>
+        <CarouselItem>item3</CarouselItem>
+    </CarouselContent>
+    <CarouselPrevious />
+    <CarouselNext />
+    </Carousel>
     </>
   )
 }
