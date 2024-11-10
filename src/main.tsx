@@ -17,6 +17,7 @@ import { RedirectToSignIn, SignedIn, SignedOut } from '@clerk/clerk-react'
 import Feed from './routes/community/feed'
 import Profile from './routes/Profile'
 import ExplorePage from './routes/Explore'
+import { SocketContextProvider } from './context/SocketContext'
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <SocketContextProvider>
+      <RouterProvider router={router} />
+    </SocketContextProvider>
   </React.StrictMode>,
 )
