@@ -3,6 +3,7 @@ import Marquee from "@/components/ui/Marquee";
 import { useEffect, useState } from "react";
 import supabase from "@/supabase/client";
 import { useNavigate } from 'react-router-dom';
+import SearchBar from "@/components/ui/search-bar";
 
 type CommunityInfo = {
   name: string;
@@ -58,6 +59,10 @@ export default function ExploreFeed() {
     <main className="h-[calc(100vh-5rem)] w-full">
       {" "}
       {/* Subtracting both navbar and header height */}
+      <div className="flex flex-col justify-center items-center gap-4">
+        <h1 className="text-4xl font-semibold text-center mt-8">All communitites</h1>
+        <SearchBar />
+      </div>
       <ScrollArea className="h-full w-full">
         {communities.map((community, index) => (
           <div 
