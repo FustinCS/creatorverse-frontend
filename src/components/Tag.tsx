@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Plus, X } from "lucide-react";
 
 type TagType = {
-    index: string;
     name: string;
     added: boolean;
     custom: boolean;
@@ -11,7 +10,6 @@ type TagType = {
 };
 
 const Tag = ({
-    index,
     name,
     added,
     custom,
@@ -36,7 +34,6 @@ const Tag = ({
 
     return (
         <span
-            key={index}
             className="bg-slate-300 text-muted-foreground text-sm py-1 px-2 rounded-full text-center flex flex-row justify-between"
         >
             {custom ? (

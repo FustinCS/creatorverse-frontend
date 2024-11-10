@@ -50,7 +50,7 @@ export type Database = {
           userId: string
         }
         Insert: {
-          id: string
+          id?: string
           publicUrl: string
           title: string
           userId: string
@@ -107,7 +107,7 @@ export type Database = {
           name: string
         }
         Insert: {
-          id: string
+          id?: string
           name: string
         }
         Update: {
@@ -176,6 +176,12 @@ export type Database = {
       requesting_user_id: {
         Args: Record<PropertyKey, never>
         Returns: string
+      }
+      upsert_communities: {
+        Args: {
+          tag_names: string[]
+        }
+        Returns: undefined
       }
     }
     Enums: {

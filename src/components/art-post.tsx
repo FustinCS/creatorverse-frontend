@@ -1,12 +1,14 @@
 // import Image from 'next/image'
 import { Card, CardContent } from "@/components/ui/card";
 import Tag from "./Tag";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { Button } from "./ui/button";
 import { ImagePlus } from "lucide-react";
 import supabase, { BUCKET_KEY } from "@/supabase/client";
 import { comparePhoto } from "@/api/api";
+import { useToast } from "@/hooks/use-toast";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 export default function ArtPost() {
   // title = "Starry Night", 
@@ -22,26 +24,32 @@ export default function ArtPost() {
   const [tags, setTags] = useState<string[]>([]);
   const [imageUrl, setImageUrl] = useState('/placeholder.svg');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
+  const [tagsLoading, setTagsLoading] = useState(false);
 
-  useEffect(() => {
-    console.log('tags:', tags);//TESTING
-  }, [tags]);
 
-  useEffect(()=> {
-    if(!isSignedIn){
-      console.error('post-page: not signed in yet');
-      return;
-    }
-    
-      
-  }, [isSignedIn])
+  // useEffect(() => {
+  //   console.log('tags:', tags);//TESTING
+  // }, [tags]);
+
+  // useEffect(()=> {
+  //   if(!isSignedIn){
+  //     console.error('post-page: not signed in yet');
+  //     return;
+  //   }
+  // }, [isSignedIn])
+  if(!user){
+    return <p>No user 🥺</p>
+  }
 
   const addTag = (tagName: string) => {
-    setTags((prev) => (
-      [...prev, tagName]
-    ))
+    setTags((prev) => {
+      if (prev.includes(tagName)) {
+        return prev; 
+      }
+      return [...prev, tagName]; 
+    });
   };
-
   const removeTag = (tagName: string) => {
     setTags(prev => prev.filter(tag => tag !== tagName))
   }
@@ -70,7 +78,13 @@ export default function ArtPost() {
   };
 
   const generateTags = async() => {
-    if(!imageUrl || artName === '') {
+    console.log('genTags:', imageUrl, artName);//TESTING
+    if(imageUrl === '/placeholder.svg' || artName === '') {
+      toast({
+        title: "Oops!",
+        description: imageUrl === '/placeholder.svg' ? "No ImageUrl!" : "Enter an art name!",
+        variant: "destructive"
+      })
       return;
     }
     const file = await fetchImageFile(imageUrl);
@@ -83,9 +97,13 @@ export default function ArtPost() {
       } else {
         // CALL API HERE
         const publicUrl = BUCKET_KEY + data.fullPath;
+        setTagsLoading(true);//TESTING
         try {
-          await comparePhoto(publicUrl);
+          const { result } = await comparePhoto(publicUrl);
+          const filteredSuggestedTags = result.filter(suggestion => suggestion.similarity_score >= 0.7);
+          filteredSuggestedTags.forEach(suggestion => addTag(suggestion.community));
           console.log('photo compared');
+          setTagsLoading(false);
         } catch (error) {
           console.error('photo not compared:', error);
         }
@@ -93,6 +111,105 @@ export default function ArtPost() {
 
   };
 
+  /**
+   * Synchronize tags with the Community table in Supabase.
+   * @param {string[]} tags - Array of tag names to synchronize.
+   */
+  const synchronizeTags = async () => {
+    if (!tags || tags.length === 0) {
+      console.log('No tags to synchronize.');
+      return;
+    }
+    try {
+      // Call the upsert_communities function with the tags array
+      const { data, error } = await supabase
+        .rpc('upsert_communities', { tag_names: tags });
+      if (error) {
+        throw error;
+      }
+      console.log('Tags synchronized successfully:', data);
+    } catch (error) {
+      console.error('Error synchronizing tags:', error);
+    }
+  };
+
+  const submitPost = async () => {
+    if(imageUrl === '/placeholder.svg' || artName === '') {
+      toast({
+        title: "Oops!",
+        description: imageUrl === '/placeholder.svg' ? "No ImageUrl!" : "Enter an art name!",
+        variant: "destructive"
+      })
+      return;
+    }
+    if(tags.length === 0){
+      toast({
+        title: "Oops!",
+        description: 'Make sure to generate or add a community tag!',
+        variant: "destructive"
+      });
+      return;
+    }
+    // upload to creator image bucket
+    // standard upload
+    const file = await fetchImageFile(imageUrl);
+    const { data, error } = await supabase.storage.from('creator-images').upload(artistUsername + '-' + artName, file );
+    if(error){
+      console.error('error submitting art post:', error);
+      return;
+    }
+    // create communities if they dont exist
+    await synchronizeTags();
+
+    // post to art
+    const { data: artData, error:artError } = await supabase.from('Art').insert({
+      publicUrl: BUCKET_KEY + data.fullPath,
+      title: artName, 
+      userId: user.id
+    }).select();
+
+    if(artError){
+      console.error('error submitting art post after posting to communities:', artError);
+      return;
+    }
+    const artId = artData[0].id;
+
+  // Fetch communityId for each tag and post to arts-communities
+  for (const tag of tags) {
+    const { data: communityData, error: communityError } = await supabase
+      .from('Community')
+      .select('id')
+      .eq('name', tag)
+      .single();
+    if (communityError) {
+      console.error(`error fetching communityId for tag ${tag}:`, communityError);
+      return;
+    }
+    const communityId = communityData.id;
+    // Post to arts-communities
+    const { error: artComError } = await supabase.from('Arts_Communities').insert({
+      artId: artId,
+      communityId: communityId
+    });
+    if (artComError) {
+      console.error(`error submitting art post to arts-communities for tag ${tag}:`, artComError);
+      return;
+    }
+    // Post to users-communities
+    const { error: userComError } = await supabase.from('Users_Communities').insert({
+      userId: user.id,
+      communityId: communityId
+    });
+    if (userComError) {
+      console.error(`error submitting user to users-communities for tag ${tag}:`, userComError);
+      return;
+    }
+  }
+  toast({
+    variant: 'default',
+    title: "Art Posted!",
+  })
+  }
 
 
   return (
@@ -115,7 +232,7 @@ export default function ArtPost() {
           <img
             src={imageUrl}
             alt={`Artwork: ${artName} by ${artistUsername}`}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover border border-black rounded-lg"
             style={{
               objectFit: isPlaceholder ? 'cover' : 'contain',
               width: '100%',
@@ -137,12 +254,19 @@ export default function ArtPost() {
           accept="image/*"
           className="hidden"
         />
-        <Button variant='secondary' className="bg-slate-300" onClick={() => generateTags()} >Generate Tags</Button>
+        <div className="my-auto w-full">{tagsLoading && LoadingSpinner({className: 'w-12 h-12'})}</div>
+        <Button 
+          variant='secondary' 
+          className="bg-green-400 hover:bg-green-500 w-[10rem] ml-auto" 
+          onClick={() => generateTags()}
+        >
+          Generate Tags
+        </Button>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-4">
           {tags.map((tag, index) => (
             <Tag  
-              index={index + tag}
+              key={index + tag}
               name={tag}
               added={tags.includes(tag)}
               custom={false}
@@ -151,7 +275,6 @@ export default function ArtPost() {
             />
           ))}
           <Tag
-            index={'new'}
             name={''}
             added={false}
             custom={true}
@@ -159,7 +282,7 @@ export default function ArtPost() {
             removeTagHandler={removeTag}
           />
         </div>
-          <Button variant='default'>Post</Button>
+          <Button variant='default' onClick={submitPost}>Post</Button>
       </CardContent>
     </Card>
     </div>
