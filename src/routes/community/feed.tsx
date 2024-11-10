@@ -31,6 +31,16 @@ type CommunityInfo = {
   Art: { id: string; publicUrl: string }[];
 }
 
+// will duplicate items in array until it hits a certain length
+function extendArray(arr: string[], minLength: number) {
+  if (arr.length >= minLength) return arr;
+  const extendedArray = [...arr];
+  while (extendedArray.length < minLength) {
+    extendedArray.push(...arr.slice(0, minLength - extendedArray.length));
+  }
+  return extendedArray;
+}
+
 
 export default function Feed() {
   const [communities, setCommunitites] = useState<CommunityInfo[]>([]);
@@ -56,15 +66,15 @@ export default function Feed() {
     <main className="h-[calc(100vh-8rem)] w-full">
       {" "}
       {/* Subtracting both navbar and header height */}
-      <ScrollArea className="h-full w-full">
+      <ScrollArea className="h-full w-full my-16">
         {communities.map((community) => (
-          <div className="group flex flex-col m-8 items-center justify-center bg-background rounded-3xl cursor-pointer">
+          <div className="group flex flex-col mx-16 items-center justify-center bg-background rounded-3xl cursor-pointer">
             <h2 className="scroll-m-20  pb-2 text-3xl font-semibold tracking-tight first:mt-0 p-4 group-hover:scale-110">
               {community.name}
             </h2>
             <div className="relative w-9/12  bg-background ">
               <Marquee runOnHover className="[--duration:15s]">
-                {community.Art.map((artwork) => (
+                {extendArray(community.Art, 10).map((artwork) => (
                   <img
                     key={artwork.id}
                     src={artwork.publicUrl}
